@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class= "container">
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="enter city name" spellcheck="false">
+            <button>
+                <img src="photos/search.png" alt="searching">
+            </button>
+        </div>
+
+        <div class="weather">
+            <img src="photos/rain.png" class="iconWeather">
+            <h1 class="temperature">-6°c</h1>
+            <h2 class="place">Toronto</h2>
+
+            <div class="info">
+                <div class="col">
+                    <img src="photos/humidity.png">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <img src="photos/wind.png">
+                    <div>
+                        <p class="wind">15 km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    
+    </div>
+
+<script>
+
+    //variable
+    const aKey = "0c7c776850a9a827805e4f3304ea066a";
+    const aUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+    const searchingBox = document.querySelector(".search input");
+    const searchingBotton = document.querySelector(".search button");
+
+    const iconweather = document.querySelector(".iconWeather");
+
+    async function checkWeather(place) {
+        const response = await fetch(aUrl + place + `&appid=${aKey}`);
+        
+        //This data has all the information of the weather.
+        const data = await response.json();
+
+        
+
+        
+
+        //query selector will select the city element and innerHtml will update the text which is writen in the below element.
+        document.querySelector(".place").innerHTML = data.name;
+        document.querySelector(".temperature").innerHTML = Math.round(data.main.temp)  + "°c";
+        document.querySelector(".humidity").innerHTML = data.main.humidity + " %";
+        document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+        if (data.weather[0].main == "Clouds") {
+            iconweather.src = "photos/clouds.png";
+        }
+        else if (data.weather[0].main == "Mist") {
+            iconweather.src = "photos/mist.png";
+        }
+        else if (data.weather[0].main == "Clear") {
+            iconweather.src = "photos/clear.png";
+        }
+        else if (data.weather[0].main == "Drizzle") {
+            iconweather.src = "photos/drizzle.png";
+        }
+        else if (data.weather[0].main == "Rain") {
+            iconweather.src = "photos/rain.png";
+        }
+
+        document.querySelector(".weather").style.display = "block";
+
+    }
+
+    searchingBotton.addEventListener("click", () => {
+    checkWeather(searchingBox.value);
+
+})
+
+</script>
+
+
+</div>
+</body>
+</html>
